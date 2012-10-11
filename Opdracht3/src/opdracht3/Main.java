@@ -139,8 +139,8 @@ public class Main {
 
         Random rnd = new Random();
         for (int i = 0; i < amount; i++) {
-            // Generate random number under 10
-            array[i] = rnd.nextInt(10);
+            // Generate random number under 10, above 0
+            array[i] = rnd.nextInt(9) + 1;
         }
         return array;
     }
