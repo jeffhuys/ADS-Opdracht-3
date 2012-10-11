@@ -84,8 +84,8 @@ public class Main {
             input = input.trim();
 
             input.contains("+");
-
-            int userAnswer = calculateAnswerFromString(input, numbers, operators);
+            
+            int userAnswer = calculateAnswerFromString(input.replaceAll("x", "*"), numbers, operators);
             if (userAnswer == answer) {
                 System.out.println("Correctemente");
             } else {
