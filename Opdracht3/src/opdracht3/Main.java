@@ -191,6 +191,8 @@ public class Main {
             System.out.println("Error in syntax! JavaScript could not evaluate "
                              + calc);
             System.out.println("Ex: " + ex.getMessage());
+        } catch (NullPointerException ex) {
+            System.out.println("Dude, je geeft nu niks mee!");
         }
         
         /*
