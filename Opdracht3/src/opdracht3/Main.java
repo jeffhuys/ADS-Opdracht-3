@@ -25,110 +25,86 @@ public class Main {
         System.out.println("Mauricio Kruijer\n");
 
         Main main = new Main();
-        main.puzzle(false, 10);
+        main.puzzle(true, 10);
     }
 
     public void puzzle(boolean mayTryAgain, int numberOfQuestions) {
         int questionsCorrect = 0;
-        for (int question = 0; question < numberOfQuestions; question++) {
-            amountOfNumbers = 4;
+        int answer = 0;
+        boolean goToNext = true;
+        String finalSum = "";
+        amountOfNumbers = 4;
+        int[] numbers = generateRandomNumbers(amountOfNumbers);
+        char[] operators = generateRandomOperators(amountOfNumbers - 1);
+        
+        for (int question = 0; question < numberOfQuestions; question++) {           
+            if(goToNext) {
+                String finalString = "";
 
-            int[] numbers = generateRandomNumbers(amountOfNumbers);
-            char[] operators = generateRandomOperators(amountOfNumbers - 1);
-
-            //for(int i = 0; i < amountOfNumbers - 1; i++) {
-            //    System.out.println(operators[i]);
-            //}
-            //System.out.println(operators[0]);
-
-            String finalString = "";
-            String calculateString = "";
-            for (int i = 0; i < amountOfNumbers; i++) {
-                finalString += numbers[i];
-                calculateString += numbers[i];
-                finalString += " ";
-                if (i != amountOfNumbers - 1) {
-                    finalString += operators[i];
-                    calculateString += operators[i];
+                String calculateString = "";
+                for (int i = 0; i < amountOfNumbers; i++) {
+                    finalString += numbers[i];
+                    calculateString += numbers[i];
                     finalString += " ";
+                    if (i != amountOfNumbers - 1) {
+                        finalString += operators[i];
+                        calculateString += operators[i];
+                        finalString += " ";
+                    }
                 }
-            }
-            calculateString = calculateString.replaceAll("x", "*");
-            int answer = calculateAnswerFromString(calculateString);
+                calculateString = calculateString.replaceAll("x", "*");
+                answer = calculateAnswerFromString(calculateString);
 
-            // Order numbers from int[] numbers and display them
-            Arrays.sort(numbers);
-            for (int i = 0; i < amountOfNumbers; i++) {
-                System.out.print(numbers[i] + " ");
-            }
-            System.out.print(" ");
+                // Order numbers from int[] numbers and display them
+                Arrays.sort(numbers);
+                for (int i = 0; i < amountOfNumbers; i++) {
+                    finalSum += numbers[i] + " ";
+                    System.out.print(numbers[i] + " ");
+                }
+                finalSum += " ";
+                System.out.print(" ");
 
-            // Print the operators possible
-            String operatorsPossible = null;
-            for (int i = 0; i < operators.length; i++) {
-                operatorsPossible += operators[i];
+                // Print the operators possible
+                String operatorsPossible = null;
+                for (int i = 0; i < operators.length; i++) {
+                    operatorsPossible += operators[i];
+                }
+                if (operatorsPossible.contains("+")) {
+                    finalSum += "+ ";
+                    System.out.print("+ ");
+                }
+                if (operatorsPossible.contains("-")) {
+                    finalSum += "- ";
+                    System.out.print("- ");
+                }
+                if (operatorsPossible.contains("x")) {
+                    finalSum += "x ";
+                    System.out.print("x ");
+                }
+                finalSum += " " + answer;
+                System.out.println(" " + answer);
+                System.out.println( calculateString);
             }
-            if (operatorsPossible.contains("+")) {
-                System.out.print("+ ");
-            }
-            if (operatorsPossible.contains("-")) {
-                System.out.print("- ");
-            }
-            if (operatorsPossible.contains("x")) {
-                System.out.print("x ");
-            }
-            System.out.println(" " + answer);
-
+            
             Scanner in = new Scanner(System.in);
             String input = in.nextLine();
             input = input.trim();
-
-            input.contains("+");
             
             int userAnswer = calculateAnswerFromString(input.replaceAll("x", "*"), numbers, operators);
             if (userAnswer == answer) {
                 System.out.println("Correctemente");
+                numbers = generateRandomNumbers(amountOfNumbers);
+                operators = generateRandomOperators(amountOfNumbers - 1);
+                
+                questionsCorrect++;
+                goToNext = true;
             } else {
                 System.out.println("Fout");
+                if(mayTryAgain){
+                    goToNext = false;
+                    System.out.println(finalSum);
+                } 
             }
-
-            //System.out.print(finalString + "= ");
-            // Wait for user input
-            /*
-             Scanner in = new Scanner(System.in);
-             int input = 0;
-             boolean inputRight = false;
-             while (!inputRight) {
-             // TODO: Validate input.
-             boolean valid = false;
-             while (!valid) {
-             try {
-             if(in.hasNext())
-             input = in.nextInt();
-                        
-             valid = true;
-             } catch (java.util.InputMismatchException ex) {
-             System.out.println("Please enter a number.");
-             in.reset();
-             in.close();
-             in = new Scanner(System.in);
-             }
-             }
-                
-             if (input == answer) {
-             System.out.println("You got it! Yeah!");
-             questionsCorrect++;
-             inputRight = true;
-             } else {
-             if (mayTryAgain) {
-             System.out.print("\nWrong answer. Please try again: ");
-             } else {
-             System.out.println("Wrong. Next question.");
-             inputRight = true;
-             }
-             }
-             }
-             */
         }
         System.out.println("You got " + questionsCorrect + "/" + numberOfQuestions + " correct.");
         System.out.println("Grade: " + ((questionsCorrect / numberOfQuestions) * 10));
