@@ -36,10 +36,12 @@ public class Main {
         amountOfNumbers = 4;
         int[] numbers = generateRandomNumbers(amountOfNumbers);
         char[] operators = generateRandomOperators(amountOfNumbers - 1);
-        
-        for (int question = 0; question < numberOfQuestions; question++) {           
-            if(goToNext) {
+
+        for (int question = 0; question < numberOfQuestions; question++) {
+            if (goToNext) {
                 String finalString = "";
+                finalSum = "";
+
 
                 String calculateString = "";
                 for (int i = 0; i < amountOfNumbers; i++) {
@@ -83,27 +85,27 @@ public class Main {
                 }
                 finalSum += " " + answer;
                 System.out.println(" " + answer);
-                System.out.println( calculateString);
+                System.out.println(calculateString);
             }
-            
+
             Scanner in = new Scanner(System.in);
             String input = in.nextLine();
             input = input.trim();
-            
+
             int userAnswer = calculateAnswerFromString(input.replaceAll("x", "*"), numbers, operators);
             if (userAnswer == answer) {
                 System.out.println("Correctemente");
                 numbers = generateRandomNumbers(amountOfNumbers);
                 operators = generateRandomOperators(amountOfNumbers - 1);
-                
+
                 questionsCorrect++;
                 goToNext = true;
             } else {
                 System.out.println("Fout");
-                if(mayTryAgain){
+                if (mayTryAgain) {
                     goToNext = false;
                     System.out.println(finalSum);
-                } 
+                }
             }
         }
         System.out.println("You got " + questionsCorrect + "/" + numberOfQuestions + " correct.");
@@ -171,33 +173,6 @@ public class Main {
         } catch (NullPointerException ex) {
             System.out.println("Dude, je geeft nu niks mee!");
         }
-
-        /*
-         * Old version. This had priorities wrong (ofcourse. Just look at it, hehe)
-         * New version is above.
-         
-         for (int i = 0; i < calc.length(); i++) {
-         int isNumber = -1;
-         isNumber = isNumber(calc.charAt(i));
-         if (isNumber != -1) {
-         if (i == 0) {
-         answer = isNumber;
-         } else {
-         switch (calc.charAt(i - 1)) {
-         case 'x':
-         answer *= isNumber;
-         break;
-         case '+':
-         answer += isNumber;
-         break;
-         case '-':
-         answer -= isNumber;
-         break;
-         }
-         }
-         }
-         }
-         */
         return answer;
     }
 
@@ -237,7 +212,10 @@ public class Main {
                     numcount++;
                 } catch (NumberFormatException e) {
                     char foundChar = inputCleared.charAt(i);
-                    if(!in_array(operators, foundChar)) {
+                    // Dit repareert ook een ander probleem btw.
+                    foundChar = (foundChar == '*') ? 'x' : foundChar;
+
+                    if (!in_array(operators, foundChar)) {
 
                         System.out.println("Ongeldige operator opgegeven..");
                         return 0;
@@ -274,6 +252,7 @@ public class Main {
         }
         return false;
     }
+
     public static boolean in_array(char[] haystack, char needle) {
         for (int i = 0; i < haystack.length; i++) {
             if (haystack[i] == needle) {
@@ -282,6 +261,7 @@ public class Main {
         }
         return false;
     }
+
     public static boolean in_array(int[] haystack, int needle) {
         for (int i = 0; i < haystack.length; i++) {
             if (haystack[i] == needle) {
